@@ -8,19 +8,19 @@ defmodule LinkifyTest do
 
   test "default link" do
     assert Linkify.link("google.com") ==
-             "<a href=\"http://google.com\">google.com</a>"
+             "<a href=\"https://google.com\">google.com</a>"
   end
 
   test "default link iodata" do
     assert Linkify.link_to_iodata("google.com") ==
-             [["<a ", "href=\"http://google.com\"", ">", "google.com", "</a>"]]
+             [["<a ", "href=\"https://google.com\"", ">", "google.com", "</a>"]]
   end
 
   test "default link safe iodata" do
     assert Linkify.link_safe("google.com") ==
              [
                [
-                 {:safe, ["<a ", "href=\"http://google.com\"", ">"]},
+                 {:safe, ["<a ", "href=\"https://google.com\"", ">"]},
                  "google.com",
                  {:safe, "</a>"}
                ]
@@ -36,7 +36,7 @@ defmodule LinkifyTest do
     text = "hello google.com https://ddg.com user@email.com irc:///mIRC"
 
     expected =
-      "hello <a href=\"http://google.com\">google.com</a> <a href=\"https://ddg.com\">https://ddg.com</a> <a href=\"mailto:user@email.com\">user@email.com</a> <a href=\"irc:///mIRC\">irc:///mIRC</a>"
+      "hello <a href=\"https://google.com\">google.com</a> <a href=\"https://ddg.com\">https://ddg.com</a> <a href=\"mailto:user@email.com\">user@email.com</a> <a href=\"irc:///mIRC\">irc:///mIRC</a>"
 
     assert Linkify.link(text,
              email: true,
@@ -50,7 +50,7 @@ defmodule LinkifyTest do
     expected = [
       "hello",
       " ",
-      ["<a ", "href=\"http://google.com\"", ">", "google.com", "</a>"],
+      ["<a ", "href=\"https://google.com\"", ">", "google.com", "</a>"],
       " ",
       ["<a ", "href=\"https://ddg.com\"", ">", "https://ddg.com", "</a>"],
       " ",
@@ -67,7 +67,7 @@ defmodule LinkifyTest do
 
   test "class attribute" do
     assert Linkify.link("google.com", class: "linkified") ==
-             "<a href=\"http://google.com\" class=\"linkified\">google.com</a>"
+             "<a href=\"https://google.com\" class=\"linkified\">google.com</a>"
   end
 
   test "class attribute iodata" do
@@ -75,7 +75,7 @@ defmodule LinkifyTest do
              [
                [
                  "<a ",
-                 "href=\"http://google.com\" class=\"linkified\"",
+                 "href=\"https://google.com\" class=\"linkified\"",
                  ">",
                  "google.com",
                  "</a>"
@@ -85,7 +85,7 @@ defmodule LinkifyTest do
 
   test "rel attribute" do
     assert Linkify.link("google.com", rel: "noopener noreferrer") ==
-             "<a href=\"http://google.com\" rel=\"noopener noreferrer\">google.com</a>"
+             "<a href=\"https://google.com\" rel=\"noopener noreferrer\">google.com</a>"
   end
 
   test "rel attribute iodata" do
@@ -93,7 +93,7 @@ defmodule LinkifyTest do
              [
                [
                  "<a ",
-                 "href=\"http://google.com\" rel=\"noopener noreferrer\"",
+                 "href=\"https://google.com\" rel=\"noopener noreferrer\"",
                  ">",
                  "google.com",
                  "</a>"
@@ -104,7 +104,7 @@ defmodule LinkifyTest do
   test "rel as function" do
     text = "google.com"
 
-    expected = "<a href=\"http://google.com\" rel=\"com\">google.com</a>"
+    expected = "<a href=\"https://google.com\" rel=\"com\">google.com</a>"
 
     custom_rel = fn url ->
       url |> String.split(".") |> List.last()
@@ -114,7 +114,7 @@ defmodule LinkifyTest do
 
     text = "google.com"
 
-    expected = "<a href=\"http://google.com\">google.com</a>"
+    expected = "<a href=\"https://google.com\">google.com</a>"
 
     custom_rel = fn _ -> nil end
 
@@ -123,17 +123,17 @@ defmodule LinkifyTest do
 
   test "strip parens" do
     assert Linkify.link("(google.com)") ==
-             "(<a href=\"http://google.com\">google.com</a>)"
+             "(<a href=\"https://google.com\">google.com</a>)"
   end
 
   test "strip parens iodata" do
     assert Linkify.link_to_iodata("(google.com)") ==
-             [["(", ["<a ", "href=\"http://google.com\"", ">", "google.com", "</a>"], ")"]]
+             [["(", ["<a ", "href=\"https://google.com\"", ">", "google.com", "</a>"], ")"]]
   end
 
   test "link_map/2" do
     assert Linkify.link_map("google.com", []) ==
-             {"<a href=\"http://google.com\">google.com</a>", []}
+             {"<a href=\"https://google.com\">google.com</a>", []}
   end
 
   describe "custom handlers" do
@@ -350,7 +350,7 @@ defmodule LinkifyTest do
         )
 
       assert result_text ==
-               "hi <a href=\"https://example.com/user/user\" data-user=\"user\">@user</a>, text me asap <a href=\"xmpp:me@cofe.ai\">xmpp:me@cofe.ai</a>, (or contact me at <a href=\"mailto:me@cofe.ai\">me@cofe.ai</a>), please.<br><a href=\"http://cofe.ai\">cofe.ai</a>."
+               "hi <a href=\"https://example.com/user/user\" data-user=\"user\">@user</a>, text me asap <a href=\"xmpp:me@cofe.ai\">xmpp:me@cofe.ai</a>, (or contact me at <a href=\"mailto:me@cofe.ai\">me@cofe.ai</a>), please.<br><a href=\"https://cofe.ai\">cofe.ai</a>."
 
       assert MapSet.to_list(mentions) == [{"@user", "user"}]
     end
@@ -388,7 +388,7 @@ defmodule LinkifyTest do
 
       result_text = Linkify.link(text, href_handler: &"/redirect?#{URI.encode_query(to: &1)}")
 
-      assert result_text == ~s(<a href="/redirect?to=http%3A%2F%2Fgoogle.com">google.com</a>)
+      assert result_text == ~s(<a href="/redirect?to=https%3A%2F%2Fgoogle.com">google.com</a>)
     end
   end
 
@@ -409,7 +409,7 @@ defmodule LinkifyTest do
         "<p><strong>hello world</strong></p>\n<p><`em>another @user__test and @user__test google.com paragraph</em></p>\n"
 
       expected =
-        "<p><strong>hello world</strong></p>\n<p><`em>another <a href=\"u/user__test\">@user__test</a> and <a href=\"u/user__test\">@user__test</a> <a href=\"http://google.com\">google.com</a> paragraph</em></p>\n"
+        "<p><strong>hello world</strong></p>\n<p><`em>another <a href=\"u/user__test\">@user__test</a> and <a href=\"u/user__test\">@user__test</a> <a href=\"https://google.com\">google.com</a> paragraph</em></p>\n"
 
       assert Linkify.link(text, mention: true, mention_prefix: "u/") == expected
 
@@ -534,7 +534,7 @@ defmodule LinkifyTest do
       text = "google.com#test #test google.com/#test #tag"
 
       expected =
-        "<a href=\"http://google.com#test\">google.com#test</a> <a href=\"https://example.com/tag/test\">#test</a> <a href=\"http://google.com/#test\">google.com/#test</a> <a href=\"https://example.com/tag/tag\">#tag</a>"
+        "<a href=\"https://google.com#test\">google.com#test</a> <a href=\"https://example.com/tag/test\">#test</a> <a href=\"https://google.com/#test\">google.com/#test</a> <a href=\"https://example.com/tag/tag\">#tag</a>"
 
       assert Linkify.link(text,
                hashtag: true,
@@ -582,7 +582,7 @@ defmodule LinkifyTest do
       text = "Hey, check out www.youtube.com/watch?v=8Zg1-TufF%20zY?x=1&y=2#blabla ."
 
       expected =
-        "Hey, check out <a href=\"http://www.youtube.com/watch?v=8Zg1-TufF%20zY?x=1&y=2#blabla\" target=\"_blank\">www.youtube.com/watch?v=8Zg1-TufF%20zY?x=1&y=2#blabla</a> ."
+        "Hey, check out <a href=\"https://www.youtube.com/watch?v=8Zg1-TufF%20zY?x=1&y=2#blabla\" target=\"_blank\">www.youtube.com/watch?v=8Zg1-TufF%20zY?x=1&y=2#blabla</a> ."
 
       assert Linkify.link(text, new_window: true) == expected
     end
@@ -744,7 +744,7 @@ defmodule LinkifyTest do
       text = "this url google.foobar.com/ has valid TLD"
 
       expected =
-        "this url <a href=\"http://google.foobar.com/\">google.foobar.com/</a> has valid TLD"
+        "this url <a href=\"https://google.foobar.com/\">google.foobar.com/</a> has valid TLD"
 
       assert Linkify.link(text) == expected
     end
@@ -760,7 +760,7 @@ defmodule LinkifyTest do
       text = "this url google.foobar.com/ has valid TLD"
 
       expected =
-        "this url <a href=\"http://google.foobar.com/\">google.foobar.com/</a> has valid TLD"
+        "this url <a href=\"https://google.foobar.com/\">google.foobar.com/</a> has valid TLD"
 
       assert Linkify.link(text) == expected
     end
@@ -785,7 +785,7 @@ defmodule LinkifyTest do
 
       text = "Of course it was google.com!!"
 
-      expected = "Of course it was <a href=\"http://google.com\">google.com</a>!!"
+      expected = "Of course it was <a href=\"https://google.com\">google.com</a>!!"
 
       assert Linkify.link(text) == expected
 
@@ -793,14 +793,14 @@ defmodule LinkifyTest do
         "First I had to login to hotmail.com, then I had to delete emails because my 15MB quota was full."
 
       expected =
-        "First I had to login to <a href=\"http://hotmail.com\">hotmail.com</a>, then I had to delete emails because my 15MB quota was full."
+        "First I had to login to <a href=\"https://hotmail.com\">hotmail.com</a>, then I had to delete emails because my 15MB quota was full."
 
       assert Linkify.link(text) == expected
 
       text = "I looked at theonion.com; it was no longer funny."
 
       expected =
-        "I looked at <a href=\"http://theonion.com\">theonion.com</a>; it was no longer funny."
+        "I looked at <a href=\"https://theonion.com\">theonion.com</a>; it was no longer funny."
 
       assert Linkify.link(text) == expected
     end
@@ -808,14 +808,14 @@ defmodule LinkifyTest do
     test "IDN and punycode domain" do
       text = "FrauBücher.com says Neiiighhh!"
 
-      expected = "<a href=\"http://FrauBücher.com\">FrauBücher.com</a> says Neiiighhh!"
+      expected = "<a href=\"https://FrauBücher.com\">FrauBücher.com</a> says Neiiighhh!"
 
       assert Linkify.link(text) == expected
 
       text = "xn--fraubcher-u9a.com says Neiiighhh!"
 
       expected =
-        "<a href=\"http://xn--fraubcher-u9a.com\">xn--fraubcher-u9a.com</a> says Neiiighhh!"
+        "<a href=\"https://xn--fraubcher-u9a.com\">xn--fraubcher-u9a.com</a> says Neiiighhh!"
 
       assert Linkify.link(text) == expected
     end
@@ -825,7 +825,7 @@ defmodule LinkifyTest do
         "The riseup.net hidden service is at vww6ybal4bd7szmgncyruucpgfkqahzddi37ktceo3ah7ngmcopnpyyd.onion"
 
       expected =
-        "The <a href=\"http://riseup.net\">riseup.net</a> hidden service is at <a href=\"http://vww6ybal4bd7szmgncyruucpgfkqahzddi37ktceo3ah7ngmcopnpyyd.onion\">vww6ybal4bd7szmgncyruucpgfkqahzddi37ktceo3ah7ngmcopnpyyd.onion</a>"
+        "The <a href=\"https://riseup.net\">riseup.net</a> hidden service is at <a href=\"https://vww6ybal4bd7szmgncyruucpgfkqahzddi37ktceo3ah7ngmcopnpyyd.onion\">vww6ybal4bd7szmgncyruucpgfkqahzddi37ktceo3ah7ngmcopnpyyd.onion</a>"
 
       assert Linkify.link(text) == expected
     end

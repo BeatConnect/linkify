@@ -113,29 +113,29 @@ defmodule Linkify.ParserTest do
   describe "parse" do
     test "handle line breakes" do
       text = "google.com\r\nssss"
-      expected = "<a href=\"http://google.com\">google.com</a>\r\nssss"
+      expected = "<a href=\"https://google.com\">google.com</a>\r\nssss"
 
       assert parse(text) == expected
     end
 
     test "handle angle bracket in the end" do
       text = "google.com <br>"
-      assert parse(text) == "<a href=\"http://google.com\">google.com</a> <br>"
+      assert parse(text) == "<a href=\"https://google.com\">google.com</a> <br>"
 
       text = "google.com<br>hey"
-      assert parse(text) == "<a href=\"http://google.com\">google.com</a><br>hey"
+      assert parse(text) == "<a href=\"https://google.com\">google.com</a><br>hey"
 
       text = "hey<br>google.com"
-      assert parse(text) == "hey<br><a href=\"http://google.com\">google.com</a>"
+      assert parse(text) == "hey<br><a href=\"https://google.com\">google.com</a>"
 
       text = "<br />google.com"
-      assert parse(text) == "<br /><a href=\"http://google.com\">google.com</a>"
+      assert parse(text) == "<br /><a href=\"https://google.com\">google.com</a>"
 
       text = "google.com<"
-      assert parse(text) == "<a href=\"http://google.com\">google.com</a><"
+      assert parse(text) == "<a href=\"https://google.com\">google.com</a><"
 
       text = "google.com>"
-      assert parse(text) == "<a href=\"http://google.com\">google.com</a>>"
+      assert parse(text) == "<a href=\"https://google.com\">google.com</a>>"
     end
 
     test "does not link attributes" do
@@ -161,21 +161,21 @@ defmodule Linkify.ParserTest do
     test "links url inside html" do
       text = "<div>google.com</div>"
 
-      expected = "<div><a href=\"http://google.com\">google.com</a></div>"
+      expected = "<div><a href=\"https://google.com\">google.com</a></div>"
 
       assert parse(text, class: false, rel: false) == expected
 
       text = "Check out <div class='section'>google.com</div>"
 
       expected =
-        "Check out <div class='section'><a href=\"http://google.com\">google.com</a></div>"
+        "Check out <div class='section'><a href=\"https://google.com\">google.com</a></div>"
 
       assert parse(text, class: false, rel: false) == expected
     end
 
     test "links url inside nested html" do
       text = "<p><strong>google.com</strong></p>"
-      expected = "<p><strong><a href=\"http://google.com\">google.com</a></strong></p>"
+      expected = "<p><strong><a href=\"https://google.com\">google.com</a></strong></p>"
       assert parse(text, class: false, rel: false) == expected
     end
 
@@ -204,26 +204,26 @@ defmodule Linkify.ParserTest do
       text = " foo (example.com/path/folder/), bar"
 
       expected =
-        " foo (<a href=\"http://example.com/path/folder/\">example.com/path/folder/</a>), bar"
+        " foo (<a href=\"https://example.com/path/folder/\">example.com/path/folder/</a>), bar"
 
       assert parse(text, class: false, rel: false) == expected
     end
 
     test "do not link punctuation marks in the end" do
       text = "google.com."
-      assert parse(text) == "<a href=\"http://google.com\">google.com</a>."
+      assert parse(text) == "<a href=\"https://google.com\">google.com</a>."
 
       text = "google.com;"
-      assert parse(text) == "<a href=\"http://google.com\">google.com</a>;"
+      assert parse(text) == "<a href=\"https://google.com\">google.com</a>;"
 
       text = "google.com:"
-      assert parse(text) == "<a href=\"http://google.com\">google.com</a>:"
+      assert parse(text) == "<a href=\"https://google.com\">google.com</a>:"
 
       text = "hack google.com, please"
-      assert parse(text) == "hack <a href=\"http://google.com\">google.com</a>, please"
+      assert parse(text) == "hack <a href=\"https://google.com\">google.com</a>, please"
 
       text = "(check out google.com)"
-      assert parse(text) == "(check out <a href=\"http://google.com\">google.com</a>)"
+      assert parse(text) == "(check out <a href=\"https://google.com\">google.com</a>)"
     end
 
     test "double dot in link is allowed" do

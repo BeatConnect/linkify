@@ -4,6 +4,11 @@ Copyright © 2019-2022 Pleroma Authors
 SPDX-License-Identifier: MIT
 -->
 
+## 0.5.3 - 2023-04-25
+
+### Fixed
+
+- Default to HTTPS
 
 ## 0.5.2 - 2022-01-09
 

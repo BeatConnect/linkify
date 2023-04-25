@@ -9,30 +9,30 @@ defmodule Linkify.BuilderTest do
   import Linkify.Builder
 
   test "create_link/2" do
-    expected = "<a href=\"http://text\">text</a>"
+    expected = "<a href=\"https://text\">text</a>"
 
     assert create_link("text", %{}) == expected
 
-    expected = "<a href=\"http://text\" target=\"_blank\">text</a>"
+    expected = "<a href=\"https://text\" target=\"_blank\">text</a>"
 
     assert create_link("text", %{new_window: true}) == expected
 
-    expected = "<a href=\"http://text\" class=\"linkified\">text</a>"
+    expected = "<a href=\"https://text\" class=\"linkified\">text</a>"
     assert create_link("text", %{class: "linkified"}) == expected
 
-    expected = "<a href=\"http://text\" rel=\"me\">text</a>"
+    expected = "<a href=\"https://text\" rel=\"me\">text</a>"
 
     assert create_link("text", %{rel: "me"}) == expected
 
-    expected = "<a href=\"http://text\">t...</a>"
+    expected = "<a href=\"https://text\">t...</a>"
 
     assert create_link("text", %{truncate: 3}) == expected
 
-    expected = "<a href=\"http://text\">text</a>"
+    expected = "<a href=\"https://text\">text</a>"
     assert create_link("text", %{truncate: 2}) == expected
 
-    expected = "<a href=\"http://text\">http://text</a>"
-    assert create_link("http://text", %{strip_prefix: false}) == expected
+    expected = "<a href=\"https://text\">https://text</a>"
+    assert create_link("https://text", %{strip_prefix: false}) == expected
   end
 
   test "format_hashtag/3" do

@@ -42,7 +42,10 @@ defmodule Linkify.Mixfile do
   defp package do
     [
       licenses: ["MIT", "CC0-1.0"],
-      links: %{"GitLab" => "https://git.pleroma.social/pleroma/elixir-libraries/linkify"},
+      links: %{
+        "GitLab" => "https://git.pleroma.social/pleroma/elixir-libraries/linkify",
+        "Github" => "https://github.com/BeatConnect/linkify"
+      },
       files: ~w(lib priv README.md mix.exs)
     ]
   end

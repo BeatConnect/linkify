@@ -53,9 +53,10 @@ defmodule Linkify.Builder do
     end
   end
 
+
   defp add_scheme("http://" <> _ = url), do: url
   defp add_scheme("https://" <> _ = url), do: url
-  defp add_scheme(url), do: "http://" <> url
+  defp add_scheme(url), do: "https://" <> url
 
   defp format_url(attrs, url, opts) do
     url =

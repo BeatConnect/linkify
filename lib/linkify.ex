@@ -12,13 +12,13 @@ defmodule Linkify do
   ## Examples
 
       iex> Linkify.link("google.com")
-      ~s(<a href="http://google.com">google.com</a>)
+      ~s(<a href="https://google.com">google.com</a>)
 
       iex> Linkify.link("google.com", new_window: true, rel: "noopener noreferrer")
-      ~s(<a href="http://google.com" target="_blank" rel="noopener noreferrer">google.com</a>)
+      ~s(<a href="https://google.com" target="_blank" rel="noopener noreferrer">google.com</a>)
 
       iex> Linkify.link("google.com", class: "linkified")
-      ~s(<a href="http://google.com" class="linkified">google.com</a>)
+      ~s(<a href="https://google.com" class="linkified">google.com</a>)
   """
 
   import Linkify.Parser
