@@ -357,7 +357,7 @@ defmodule Linkify.Parser do
     hostname
     |> String.to_charlist()
     |> Enum.any?(fn s ->
-      !(s >= 0x80 || s in 0x30..0x39 || s in 0x41..0x5A || s in 0x61..0x7A || s in '.-')
+      !(s >= 0x80 || s in 0x30..0x39 || s in 0x41..0x5A || s in 0x61..0x7A || s in ~c".-")
     end)
     |> Kernel.!()
   end
